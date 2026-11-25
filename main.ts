@@ -9,5 +9,11 @@ if ([...LINE].length > 200 || LINE.trim().length === 0) {
   throw new Error("entry line must be 1-200 non-blank characters");
 }
 
+// The entry must be a single line — a stray newline would break the
+// one-liner format, so reject it rather than writing a multi-line file.
+if (LINE.includes("\n") || LINE.includes("\r")) {
+  throw new Error("entry line must be a single line");
+}
+
 mkdirSync("/output", { recursive: true });
 writeFileSync("/output/entry.txt", LINE, "utf8");
